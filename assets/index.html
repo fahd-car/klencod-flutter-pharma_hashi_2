@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#050b1a">
+<title>فارماء حاشي | دليل الأدوية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;min-height:100%;}
+body{
+  font-family:'Tajawal',system-ui,-apple-system,sans-serif;
+  background:#050599;color:#fffaaa;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+button{font-family:inherit;}
+input{font-family:inherit;}
+::-webkit-scrollbar{width:6px;height:6px;}
+::-webkit-scrollbar-thumb{background:#2b4f80;border-radius:8px;}
+
+.page{display:none;min-height:100vh;animation:fadeIn .35s ease;}
+.page.active{display:block;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+#dustLayer{position:fixed;inset:0;pointer-events:none;z-index:4;overflow:hidden;}
+.dust{position:absolute;border-radius:50%;will-change:transform,opacity;animation:fall linear forwards;filter:blur(.3px);}
+@keyframes fall{
+  0%{transform:translate(0,0) scale(1);opacity:0}
+  8%{opacity:.95}
+  70%{opacity:.7}
+  100%{transform:translate(var(--dx),105vh) scale(.35);opacity:0}
+}
+
+#page-home{
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #005487 0%, transparent 60%),
+    radial-gradient(800px 500px at 10% 110%, #0a2a55 0%, transparent 65%),
+    linear-gradient(180deg,#050b1a 0%,#071 45%,#00578493 100%);
+  position:relative;overflow:hidden;
+}
+#page-home::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background-image:
+    radial-gradient(2px 2px at 20% 30%, rgba(120,190,255,.35), transparent),
+    radial-gradient(2px 2px at 70% 60%, rgba(255,255,255,.25), transparent),
+    radial-gradient(1.5px 1.5px at 40% 80%, rgba(120,190,255,.3), transparent),
+    radial-gradient(1.5px 1.5px at 85% 20%, rgba(255,255,255,.22), transparent);
+  animation:starDrift 14s ease-in-out infinite alternate;
+}
+@keyframes starDrift{from{transform:translateY(0)}to{transform:translateY(-14px)}}
+
+.home-inner{
+  position:relative;z-index:6;min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:28px 18px 30px;
+}
+
+.logo-box{
+  position:relative;padding:14px 30px;border-radius:22px;
+  background:linear-gradient(135deg, rgba(20,60,120,.55), rgba(8,20,45,.75));
+  border:1.5px solid rgba(120,190,255,.35);
+  box-shadow:0 0 24px rgba(60,150,255,.35), inset 0 0 24px rgba(80,160,255,.12);
+  animation:logoGlow 3.6s ease-in-out infinite;
+  backdrop-filter:blur(6px);
+}
+@keyframes logoGlow{
+  0%,100%{box-shadow:0 0 22px rgba(60,150,255,.30), inset 0 0 22px rgba(80,160,255,.10);border-color:rgba(120,190,255,.30);}
+  50%{box-shadow:0 0 44px rgba(90,180,255,.60), inset 0 0 30px rgba(120,200,255,.20);border-color:rgba(180,225,255,.65);}
+}
+.logo-text{
+  font-family:'Aref Ruqaa','Reem Kufi',serif;font-weight:700;
+  font-size:clamp(26px,7.5vw,40px);line-height:1.4;
+  background:linear-gradient(100deg,#5fb4ff,#ffffff,#3f8dff,#cfeaff,#7ec8ff,#ffffff,#5fb4ff);
+  background-size:400% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 5s linear infinite;
+  filter:drop-shadow(0 0 12px rgba(90,170,255,.55));
+  white-space:nowrap;
+}
+@keyframes shine{0%{background-position:0% 50%}100%{background-position:400% 50%}}
+
+.home-center{
+  flex:1;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  gap:22px;padding:20px 0;width:100%;max-width:520px;
+}
+.capsule-btn{
+  position:relative;background:none;border:none;padding:0;margin:0;
+  cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:20px;
+  animation:capsuleFloat 4s ease-in-out infinite;
+}
+@keyframes capsuleFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.capsule{
+  position:relative;width:min(250px,66vw);height:min(112px,30vw);
+  border-radius:100px;display:flex;overflow:hidden;
+  transform:rotate(-16deg);
+  box-shadow:0 0 0 5px rgba(255,255,255,.05),0 18px 45px rgba(0,90,200,.55),0 0 70px rgba(70,160,255,.45);
+  animation:capsulePulse 3s ease-in-out infinite;
+  transition:transform .25s ease;
+}
+.capsule-btn:active .capsule{transform:rotate(-16deg) scale(.95);}
+@keyframes capsulePulse{
+  0%,100%{box-shadow:0 0 0 5px rgba(255,255,255,.05),0 18px 45px rgba(0,90,200,.45),0 0 60px rgba(70,160,255,.35);}
+  50%{box-shadow:0 0 0 5px rgba(255,255,255,.10),0 22px 60px rgba(0,120,255,.75),0 0 100px rgba(120,200,255,.65);}
+}
+.cap-half{flex:1;position:relative;}
+.cap-half.l{background:linear-gradient(135deg,#3d8ff0 0%,#1e5fbf 45%,#0b2f66 100%);}
+.cap-half.r{background:linear-gradient(135deg,#ffffff 0%,#dcefff 50%,#a9d4ff 100%);border-right:3px solid rgba(10,30,60,.35);}
+.cap-half::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(115deg,transparent 30%,rgba(255,255,255,.55) 48%,transparent 62%);
+  transform:translateX(-130%);animation:capShine 3.6s ease-in-out infinite;
+}
+@keyframes capShine{0%,55%{transform:translateX(-130%)}100%{transform:translateX(130%)}}
+.capsule-label{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Reem Kufi','Tajawal',sans-serif;font-weight:700;
+  font-size:clamp(24px,7vw,34px);color:#ffccfffa;
+  text-shadow:0 3px 14px rgba(0,0,0,.85),0 0 4px rgba(0,0,0,.9),0 0 22px rgb(0,80,180,.9);
+  letter-spacing:1px;pointer-events:none;z-index:3;
+}
+.hint{margin:0;font-size:14px;color:#8fb6e4;letter-spacing:.3px;animation:hintBlink 2.6s ease-in-out infinite;}
+@keyframes hintBlink{0%,100%{opacity:.55}50%{opacity:1}}
+
+.data-bar{
+  width:100%;max-width:520px;
+  background:linear-gradient(135deg,rgba(15,45,90,.85),rgba(8,20,42,.9));
+  border:1.5px solid rgba(212,175,55,.45);border-radius:20px;padding:14px;
+  text-align:center;
+  box-shadow:0 10px 30px rgba(0,0,0,.45), inset 0 0 24px rgba(80,160,255,.08);
+  backdrop-filter:blur(8px);transition:opacity .3s ease,transform .3s ease;
+}
+.data-bar.hidden{display:none;}
+.data-bar.is-manual{border-color:rgba(120,190,255,.45);}
+.data-bar.is-manual .title{color:#8fd0ff;}
+.data-bar .title{font-size:15px;font-weight:700;color:#ffd977;margin-bottom:6px;}
+.data-bar .desc{font-size:12.5px;color:#a8c6e8;line-height:1.7;margin-bottom:12px;}
+.dl-btn{
+  width:100%;border:none;border-radius:14px;padding:13px 16px;
+  font-size:16px;font-weight:800;color:#04182e;
+  background:linear-gradient(135deg,#ffe9a3,#d4af37 45%,#b8912b 70%,#ffe9a3);
+  background-size:200% 200%;animation:goldFlow 3.5s ease infinite;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;
+  box-shadow:0 6px 20px rgba(212,175,55,.4);transition:transform .15s ease;
+}
+.dl-btn:active{transform:scale(.97);}
+.dl-btn:disabled{opacity:.6;animation:none;}
+@keyframes goldFlow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.data-status{margin-top:10px;font-size:12.5px;color:#8fb6e4;min-height:18px;line-height:1.6;}
+.data-status.err{color:#ff9c9c;}
+.data-status.ok{color:#8ff0b0;}
+.data-status.warn{color:#ffd977;}
+
+.list-header{
+  position:sticky;top:0;z-index:50;padding:12px 14px 14px;
+  background:linear-gradient(180deg,#071228 0%,#071228 72%,rgba(7,18,40,.88) 100%);
+  backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(212,175,55,.30);
+  box-shadow:0 8px 26px rgba(0,0,0,.5);
+}
+.hdr-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;}
+.back-btn{
+  width:40px;height:40px;flex:0 0 40px;border-radius:13px;
+  border:1.5px solid rgba(212,175,55,.55);
+  background:linear-gradient(135deg,rgba(212,175,55,.22),rgba(212,175,55,.06));
+  color:#ffd977;font-size:24px;line-height:1;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;padding-bottom:3px;
+  transition:transform .15s ease,background .2s;
+}
+.back-btn:active{transform:scale(.92);background:rgba(212,175,55,.35);}
+.hdr-title{
+  margin:0;flex:1;
+  font-family:'Reem Kufi','Tajawal',sans-serif;
+  font-size:19px;font-weight:700;
+  background:linear-gradient(100deg,#8fd0ff,#ffffff,#5fa8ff,#8fd0ff);
+  background-size:300% 100%;
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 5s linear infinite;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.hdr-count{
+  font-size:12px;color:#0a1a33;font-weight:800;
+  background:linear-gradient(135deg,#ffe9a3,#d4af37);
+  padding:4px 11px;border-radius:20px;white-space:nowrap;
+}
+
+.search-box{
+  position:relative;display:flex;align-items:center;gap:9px;
+  border-radius:20px;padding:0 14px;height:54px;
+  border:3px solid transparent;
+  background:
+    linear-gradient(#ffffff,#ffffff) padding-box,
+    linear-gradient(135deg,#fff3c4,#d4af37,#8a6d1f,#ffe9a3,#d4af37,#fff3c4) border-box;
+  box-shadow:0 0 0 4px rgba(212,175,55,.10), 0 8px 24px rgba(0,0,0,.45);
+  transition:box-shadow .25s ease;
+}
+.search-box:focus-within{box-shadow:0 0 0 5px rgba(212,175,55,.22), 0 8px 30px rgba(212,175,55,.30);}
+.search-box svg{flex:0 0 20px;width:20px;height:20px;stroke:#b8912b;fill:none;stroke-width:2.2;stroke-linecap:round;}
+.search-box input{
+  flex:1;border:none;outline:none;background:transparent;
+  font-size:15px;color:#0a2b4d;font-weight:600;min-width:0;
+}
+.search-box input::placeholder{color:#96a9bd;font-weight:500;font-size:13.5px;}
+.clear-btn{
+  border:none;background:#eef4fa;color:#7b8ea3;
+  width:26px;height:26px;border-radius:50%;
+  font-size:13px;cursor:pointer;display:none;
+  align-items:center;justify-content:center;line-height:1;
+  flex:0 0 26px;
+}
+.clear-btn.show{display:flex;}
+
+.list-body{padding:14px 12px 40px;}
+.med-card{
+  position:relative;
+  background:linear-gradient(135deg,#e6f3ff 0%,#f8fcff 48%,#cfe6ff 100%);
+  border:1px solid #9fcdf5;border-radius:18px;padding:13px 15px;
+  margin-bottom:12px;color:#082a4c;
+  box-shadow:0 7px 20px rgba(0,20,50,.42), inset 0 1px 0 #fff;
+  cursor:pointer;overflow:hidden;
+  transition:transform .15s ease, box-shadow .2s ease;
+  animation:cardIn .3s ease both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.med-card:active{transform:scale(.978);box-shadow:0 3px 12px rgba(0,20,50,.5), inset 0 1px 0 #fff;}
+.med-card::before{
+  content:'';position:absolute;top:0;right:0;width:6px;height:100%;
+  background:linear-gradient(180deg,#7fc3ff,#2f7fe0,#7f3258ff);
+}
+.mc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:7px;}
+.mc-en{direction:ltr;text-align:right;font-size:14.5px;font-weight:800;color:#0b3a6b;line-height:1.35;flex:1;}
+.mc-ar{text-align:left;font-size:14.5px;font-weight:800;color:#0b3a6b;line-height:1.35;flex:1;}
+.mc-en b,.mc-ar b{
+  display:inline-block;background:linear-gradient(135deg,#2f7fe0,#0b3a6b);
+  color:#fff;font-size:11.5px;font-weight:700;
+  padding:2px 8px;border-radius:20px;
+  margin-inline-start:5px;vertical-align:middle;direction:ltr;
+}
+.mc-sci{
+  font-size:12.5px;color:#2c5c8f;font-weight:600;
+  text-align:center;padding:5px 0 3px;
+  border-top:1px dashed #a9cde9;direction:ltr;
+}
+.mc-agent{
+  font-size:11.5px;color:#4b7396;font-weight:600;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.mc-agent::before{content:'🏢';font-size:11px;}
+
+.empty-state{text-align:center;padding:60px 20px;color:#6f8fb3;}
+.empty-state .em{font-size:52px;display:block;margin-bottom:14px;opacity:.7;}
+.empty-state p{margin:0;font-size:15px;line-height:1.8;}
+
+.detail-card{
+  position:relative;border-radius:20px;padding:15px 16px;
+  margin-bottom:14px;overflow:hidden;
+  border:1px solid rgba(255,255,255,.20);
+  box-shadow:0 10px 28px rgba(0,0,0,.42);
+  background:linear-gradient(120deg, var(--c1) 0%, var(--c2) 50%, var(--c1) 100%);
+  background-size:300% 300%;
+  animation:cardFlow 8s ease-in-out infinite, cardIn .35s ease both;
+}
+@keyframes cardFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.detail-card::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.22) 50%,transparent 65%);
+  background-size:250% 100%;animation:sweep 6s linear infinite;
+}
+@keyframes sweep{0%{background-position:200% 0}100%{background-position:-100% 0}}
+.dc-head{display:flex;align-items:center;gap:9px;margin-bottom:9px;position:relative;z-index:2;}
+.dc-icon{
+  width:32px;height:32px;flex:0 0 32px;border-radius:10px;
+  background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.30);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;backdrop-filter:blur(4px);
+}
+.dc-title{
+  font-family:'Reem Kufi','Tajawal',sans-serif;
+  font-size:15px;font-weight:700;color:#fff;
+  text-shadow:0 2px 8px rgba(0,0,0,.45);letter-spacing:.2px;
+}
+.dc-body{
+  position:relative;z-index:2;font-size:14px;line-height:1.95;
+  color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.40);
+  white-space:pre-line;word-break:break-word;
+}
+.dc-body .en-line{direction:ltr;text-align:right;display:block;font-weight:800;font-size:15px;}
+.dc-body .ar-line{display:block;font-weight:800;font-size:15px;}
+.dc-body .sub{display:block;font-size:12.5px;opacity:.92;margin-top:2px;}
+.pill{
+  display:inline-block;background:rgba(255,255,255,.24);
+  border:1px solid rgba(255,255,255,.35);border-radius:20px;
+  padding:2px 11px;font-size:12.5px;font-weight:700;
+  margin-inline-start:6px;direction:ltr;
+}
+</style>
+</head>
+<body>
+
+<div id="dustLayer"></div>
+
+<!-- ================= الصفحة الرئيسية ================= -->
+<section id="page-home" class="page active">
+  <div class="home-inner">
+    <div class="logo-box" id="logoBox">
+      <span class="logo-text">فارماء حاشي</span>
+    </div>
+    
+    <div class="home-center">
+      <button class="capsule-btn" id="btnMeds" aria-label="أدوية">
+        <div class="capsule">
+          <span class="cap-half l"></span>
+          <span class="cap-half r"></span>
+          <span class="capsule-label">أدوية</span>
+        </div>
+      </button>
+      <p class="hint">اضغط على الكبسولة للدخول إلى دليل الأدوية</p>
+    </div>
+
+    <div class="data-bar" id="dataBar">
+      <div class="title" id="barTitle">تنزيل البيانات</div>
+      <div class="desc" id="barDesc">يجب تنزيل قاعدة بيانات الأدوية لـ (فارماء حاشي) مرة واحدة لتعمل بعدها بدون إنترنت.</div>
+      <button class="dl-btn" id="dlBtn">
+        <span>⬇</span><span id="dlBtnText">تنزيل البيانات الآن</span>
+      </button>
+      <div class="data-status" id="dataStatus"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= صفحة قائمة الأدوية ================= -->
+<section id="page-list" class="page">
+  <header class="list-header">
+    <div class="hdr-row">
+      <button class="back-btn" id="backFromList" aria-label="رجوع">›</button>
+      <h2 class="hdr-title">_____دليل الأدوية د/ فهد حاشي______</h2>
+      <span class="hdr-count" id="medCount">0</span>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/></svg>
+      <input id="searchInput" type="search" autocomplete="off" spellcheck="false"
+             placeholder="اكتب أول حرف… الاسم العلمي / التجاري / الوكيل">
+      <button class="clear-btn" id="clearBtn" aria-label="مسح">✕</button>
+    </div>
+  </header>
+  <div class="list-body" id="listBody"></div>
+</section>
+
+<!-- ================= صفحة التفاصيل ================= -->
+<section id="page-detail" class="page">
+  <header class="list-header">
+    <div class="hdr-row">
+      <button class="back-btn" id="backFromDetail" aria-label="رجوع">›</button>
+      <h2 class="hdr-title" id="detailTitle">تفاصيل الدواء</h2>
+    </div>
+  </header>
+  <div class="list-body" id="detailBody"></div>
+</section>
+
+<script>
+/* ==========================================================
+   د/ فهد حاشي _دليل الأدوية 
+   ========================================================== */
+
+const FIREBASE_CONFIG = {
+  apiKey: "AIzaSyDDHApOD7s44cck1WHqvSW28kxfm8Y_wXA",
+  authDomain: "drugs-naon.firebaseapp.com",
+  databaseURL: "https://drugs-naon-default-rtdb.firebaseio.com",
+  projectId: "drugs-naon",
+  storageBucket: "drugs-naon.firebasestorage.app",
+  messagingSenderId: "218900401165",
+  appId: "1:218900401165:web:d81af3fb92065cf6261944",
+  measurementId: "G-26PZK6QW1J"
+};
+
+const MED_PATHS = [
+  'drugs/medicines',
+  'medicines',
+  'drugs',
+  'medications',
+  'data',
+  'items',
+  'products',
+  ''
+];
+
+const DB_PATH_META = 'drugs/meta/version';
+
+const LS_DATA = 'pharma_hashi_meds_v2';
+const LS_VER  = 'pharma_hashi_ver_v2';
+const LS_TIME = 'pharma_hashi_time_v2';
+const LS_SRC  = 'pharma_hashi_src_v2';
+
+let MEDS = [];
+let fbApi = null;
+let currentMedId = null;
+let dustTimer = null;
+let updateAvailable = false;
+let currentSource = '';
+let pendingRemoteList = null;
+let pendingRemoteSource = '';
+
+function esc(s){
+  return String(s === undefined || s === null ? '' : s)
+    .replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function safeGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function safeSet(k,v){ try{ localStorage.setItem(k,v); return true; }catch(e){ return false; } }
+function simpleHash(str){
+  let h = 5381;
+  for(let i=0;i<str.length;i++){ h = ((h<<5)+h+str.charCodeAt(i))|0; }
+  return 'v' + Math.abs(h);
+}
+
+function normalizeMed(raw, id){
+  const o = raw || {};
+  const g = (...keys) => {
+    for(const k of keys){
+      if(o[k] !== undefined && o[k] !== null && String(o[k]).trim() !== '') return o[k];
+    }
+    return '';
+  };
+  return {
+    id: id || g('id','key') || ('m_' + Math.random().toString(36).slice(2,9)),
+    tradeNameEn:   String(g('tradeNameEn','tradeNameEN','trade_en','nameEn','nameEN','englishName','tradeName','brandName')),
+    tradeNameAr:   String(g('tradeNameAr','tradeNameAR','trade_ar','nameAr','nameAR','arabicName','tradeNameArabic')),
+    doseEn:        String(g('doseEn','doseEN','dose_en','dose','strength','doseEnglish')),
+    doseAr:        String(g('doseAr','doseAR','dose_ar','doseArabic','strengthAr')),
+    form:          String(g('form','dosageForm','drugForm','shape','formAr')),
+    scientificName:String(g('scientificName','scientific_name','scienceName','genericName','scientific')),
+    agent:         String(g('agent','agentName','company','distributor','marketingCompany','supplier')) || 'فارماء حاشي ',
+    mechanism:     String(g('mechanism','mechanismOfAction','moa','action','mechanismAr')),
+    uses:          String(g('uses','indications','usage','use','indication')),
+    sideEffects:   String(g('sideEffects','side_effects','adverseEffects','sideEffect','adverseReactions')),
+    contraindications: String(g('contraindications','contra','contraindication','warnings','precautions'))
+  };
+}
+
+function looksLikeMed(o){
+  if(!o || typeof o !== 'object' || Array.isArray(o)) return false;
+  const keys = Object.keys(o).map(k => k.toLowerCase());
+  const hints = ['tradenameen','tradenamear','scientificname','doseen','dosear','agent','mechanism','uses'];
+  return keys.some(k => hints.includes(k));
+}
+
+function parseMedsNode(val){
+  if(!val) return [];
+  const out = [];
+  if(Array.isArray(val)){
+    val.forEach((v,i)=>{
+      if(v && typeof v === 'object') out.push(normalizeMed(v, String(i)));
+    });
+  }else if(typeof val === 'object'){
+    Object.keys(val).forEach(k=>{
+      const v = val[k];
+      if(v && typeof v === 'object' && !Array.isArray(v)){
+        const nm = normalizeMed(v, k);
+        if(nm.tradeNameEn || nm.tradeNameAr || nm.scientificName){
+          out.push(nm);
+        }
+      }
+    });
+  }
+  return out;
+}
+
+function deepFindMeds(obj, depth, pathPrefix){
+  depth = depth || 0;
+  pathPrefix = pathPrefix || '';
+  if(depth > 4 || !obj || typeof obj !== 'object') return null;
+
+  const direct = parseMedsNode(obj);
+  if(direct.length) return { list: direct, path: pathPrefix };
+
+  if(Array.isArray(obj)) return null;
+
+  for(const k of Object.keys(obj)){
+    const v = obj[k];
+    if(!v || typeof v !== 'object') continue;
+
+    if(looksLikeMed(v)){
+      return { list: [normalizeMed(v, k)], path: pathPrefix + '/' + k };
+    }
+
+    const sub = deepFindMeds(v, depth + 1, pathPrefix + '/' + k);
+    if(sub && sub.list.length) return sub;
+  }
+  return null;
+}
+
+async function initFirebase(){
+  if(fbApi) return fbApi;
+  const appMod = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+  const dbMod  = await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js");
+  const app = appMod.initializeApp(FIREBASE_CONFIG);
+  const db  = dbMod.getDatabase(app);
+  fbApi = { db, ref: dbMod.ref, get: dbMod.get };
+  return fbApi;
+}
+
+async function fetchMedsFromFirebase(){
+  const { db, ref, get } = await initFirebase();
+
+  for(const path of MED_PATHS){
+    try{
+      const target = path || '/';
+      const snap = await get(ref(db, target));
+      const val = snap.val();
+
+      if(!val) continue;
+
+      if(looksLikeMed(val)){
+        currentSource = target;
+        return [normalizeMed(val, 'single_0')];
+      }
+
+      const list = parseMedsNode(val);
+      if(list.length){
+        currentSource = target;
+        return list;
+      }
+
+      const deep = deepFindMeds(val, 0, target === '/' ? '' : '/' + target);
+      if(deep && deep.list.length){
+        currentSource = deep.path.replace(/^\//,'');
+        return deep.list;
+      }
+    }catch(e){}
+  }
+  return [];
+}
+
+async function fetchRemoteVersion(){
+  const { db, ref, get } = await initFirebase();
+  let ver = '';
+  try{
+    const vs = await get(ref(db, DB_PATH_META));
+    if(vs.exists()) ver = String(vs.val());
+  }catch(e){}
+  return ver;
+}
+
+function loadLocalData(){
+  const raw = safeGet(LS_DATA);
+  if(!raw) return false;
+  try{
+    const arr = JSON.parse(raw);
+    if(Array.isArray(arr) && arr.length){
+      MEDS = arr.map((m,i)=> normalizeMed(m, m.id || ('m'+i)));
+      currentSource = safeGet(LS_SRC) || '';
+      return true;
+    }
+  }catch(e){}
+  return false;
+}
+
+function saveLocalData(list, version, source){
+  MEDS = list.map((m,i)=> normalizeMed(m, m.id || ('m'+i)));
+  safeSet(LS_DATA, JSON.stringify(MEDS));
+  safeSet(LS_VER, version || simpleHash(JSON.stringify(MEDS)));
+  safeSet(LS_TIME, String(Date.now()));
+  if(source !== undefined){
+    safeSet(LS_SRC, source || '');
+    currentSource = source || '';
+  }
+}
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById('page-' + name);
+  if(el) el.classList.add('active');
+  window.scrollTo(0,0);
+  if(name === 'home') startDust(); else stopDust();
+}
+
+function safePushState(state){
+  try { history.pushState(state, ''); } catch(e){ /* WebView restriction */ }
+}
+function safeReplaceState(state){
+  try { history.replaceState(state, ''); } catch(e){ /* WebView restriction */ }
+}
+
+function nav(name, medId, push){
+  if(push !== false) safePushState({ name, medId: medId || null });
+  if(name === 'home'){ showPage('home'); }
+  else if(name === 'list'){ showPage('list'); renderList(document.getElementById('searchInput').value); }
+  else if(name === 'detail'){
+    if(medId) currentMedId = medId;
+    renderDetail(currentMedId);
+    showPage('detail');
+  }
+}
+
+window.addEventListener('popstate', (e)=>{
+  const s = e.state;
+  if(!s || !s.name){ showPage('home'); return; }
+  if(s.name === 'detail' && s.medId){ currentMedId = s.medId; renderDetail(currentMedId); showPage('detail'); }
+  else if(s.name === 'list'){ renderList(document.getElementById('searchInput').value); showPage('list'); }
+  else showPage('home');
+});
+
+function spawnDust(){
+  const layer = document.getElementById('dustLayer');
+  const logo  = document.getElementById('logoBox');
+  if(!layer || !logo) return;
+  const r = logo.getBoundingClientRect();
+  const p = document.createElement('div');
+  p.className = 'dust';
+  const size = 2 + Math.random() * 4.5;
+  const blue = Math.random() > 0.42;
+  p.style.width  = size + 'px';
+  p.style.height = size + 'px';
+  p.style.left   = (r.left + Math.random() * r.width) + 'px';
+  p.style.top    = (r.bottom - 6) + 'px';
+  p.style.setProperty('--dx', (Math.random() * 220 - 110).toFixed(1) + 'px');
+  p.style.animationDuration = (2.6 + Math.random() * 3.2).toFixed(2) + 's';
+  if(blue){
+    const c = Math.random() > .5 ? '90,170,255' : '140,205,255';
+    p.style.background = 'radial-gradient(circle at 35% 35%, rgba(255,255,255,.95), rgba(' + c + ',.95) 60%, rgba(' + c + ',0) 100%)';
+    p.style.boxShadow  = '0 0 8px rgba(' + c + ',.95), 0 0 16px rgba(' + c + ',.55)';
+  }else{
+    p.style.background = 'radial-gradient(circle at 35% 35%, #ffffff, rgba(230,244,255,.95) 60%, rgba(200,230,255,0) 100%)';
+    p.style.boxShadow  = '0 0 8px rgba(255,255,255,.95), 0 0 18px rgba(180,220,255,.6)';
+  }
+  layer.appendChild(p);
+  setTimeout(()=>{ p.remove(); }, 6500);
+}
+function startDust(){
+  if(dustTimer) return;
+  for(let i=0;i<8;i++) setTimeout(spawnDust, i*140);
+  dustTimer = setInterval(spawnDust, 95);
+}
+function stopDust(){ if(dustTimer){ clearInterval(dustTimer); dustTimer = null; } }
+
+function renderList(query){
+  const body = document.getElementById('listBody');
+  const countEl = document.getElementById('medCount');
+  const q = (query || '').trim().toLowerCase();
+
+  if(!MEDS.length){
+    countEl.textContent = '0';
+    body.innerHTML =
+      '<div class="empty-state">' +
+        '<span class="em">📦</span>' +
+        '<p>لا توجد بيانات أدوية محمّلة.<br>ارجع للصفحة الرئيسية واضغط «تنزيل البيانات».</p>' +
+      '</div>';
+    return;
+  }
+
+  let arr = MEDS.slice();
+  arr.sort((a,b)=>{
+    const x = (a.tradeNameEn || a.tradeNameAr || '').toString();
+    const y = (b.tradeNameEn || b.tradeNameAr || '').toString();
+    return x.localeCompare(y, 'en', { sensitivity:'base' });
+  });
+
+  if(q){
+    arr = arr.filter(m=>{
+      const hay = [
+        m.tradeNameEn, m.tradeNameAr, m.scientificName, m.agent,
+        m.doseEn, m.doseAr, m.form
+      ].filter(Boolean).join(' ').toLowerCase();
+      return hay.indexOf(q) !== -1;
+    });
+  }
+
+  countEl.textContent = arr.length;
+
+  if(!arr.length){
+    body.innerHTML =
+      '<div class="empty-state">' +
+        '<span class="em">🔍</span>' +
+        '<p>لا توجد نتائج مطابقة لبحثك.</p>' +
+      '</div>';
+    return;
+  }
+
+  body.innerHTML = arr.map(m=>{
+    const en = esc(m.tradeNameEn || m.tradeNameAr || '—');
+    const ar = esc(m.tradeNameAr || m.tradeNameEn || '—');
+    const dEn = m.doseEn ? '<b>' + esc(m.doseEn) + '</b>' : '';
+    const dAr = m.doseAr ? '<b>' + esc(m.doseAr) + '</b>' : '';
+    const agentName = esc(m.agent || 'صيدلية طوفان الأقصى الحديثة');
+    return '' +
+      '<div class="med-card" data-id="' + esc(m.id) + '">' +
+        '<div class="mc-top">' +
+          '<div class="mc-en">' + en + dEn + '</div>' +
+          '<div class="mc-ar">' + ar + dAr + '</div>' +
+        '</div>' +
+        (m.scientificName ? '<div class="mc-sci">' + esc(m.scientificName) + '</div>' : '') +
+        '<div class="mc-agent">' + agentName + '</div>' +
+      '</div>';
+  }).join('');
+}
+
+const DETAIL_SECTIONS = [
+  { key:'trade',   title:'((الاسم)) التجاري', icon:'💊', c1:'#1d4ed8', c2:'#0ea5e9' },
+  { key:'sci',     title:'(( الاسم العلمي)) ', icon:'🧪', c1:'#0f766e', c2:'#22d3ee' },
+  { key:'agent',   title:'آلُـِـِِـِِِوٌكُـُيلَ',       icon:'🏢', c1:'#6d28d9', c2:'#c084fc' },
+  { key:'mech',    title:'((آلية_العمل  )) mechanism of action',             icon:'⚙️', c1:'#b45309', c2:'#fbbf24' },
+  { key:'uses',    title:'الاستخدام))  Usas',              icon:'✅', c1:'#15803d', c2:'#4ade80' },
+  { key:'side',    title:' الاثار    الجانبية)) The side effects ',        icon:'⚠️', c1:'#b91c1c', c2:'#fb7185' },
+  { key:'contra',  title:'موانع  الاستخدام  )) Contraindications',       icon:'⛔', c1:'#4c1d95', c2:'#ec4899' }
+];
+
+function renderDetail(medId){
+  const body = document.getElementById('detailBody');
+  const titleEl = document.getElementById('detailTitle');
+  const med = MEDS.find(m => m.id === medId);
+
+  if(!med){
+    titleEl.textContent = 'تفاصيل الدواء';
+    body.innerHTML = '<div class="empty-state"><span class="em">❓</span><p>لم يتم العثور على الدواء.</p></div>';
+    return;
+  }
+
+  titleEl.textContent = med.tradeNameAr || med.tradeNameEn || 'تفاصيل الدواء';
+
+  const bodies = {
+    trade:
+      (med.tradeNameEn || med.tradeNameAr
+        ? '<span class="en-line">' + esc(med.tradeNameEn || med.tradeNameAr) +
+          (med.doseEn ? ' <span class="pill">' + esc(med.doseEn) + '</span>' : '') + '</span>'
+        : '') +
+      (med.tradeNameAr
+        ? '<span class="ar-line">' + esc(med.tradeNameAr) +
+          (med.doseAr ? ' <span class="pill">' + esc(med.doseAr) + '</span>' : '') + '</span>'
+        : '') +
+      (med.form ? '<span class="sub">الشكل الدوائي: ' + esc(med.form) + '</span>' : ''),
+    sci:   esc(med.scientificName || 'غير متوفر'),
+    agent: esc(med.agent || 'فارماء حاشي '),
+    mech:  esc(med.mechanism || 'غير متوفر'),
+    uses:  esc(med.uses || 'غير متوفر'),
+    side:  esc(med.sideEffects || 'غير متوفر'),
+    contra:esc(med.contraindications || 'غير متوفر')
+  };
+
+  body.innerHTML = DETAIL_SECTIONS.map(s =>
+    '<div class="detail-card" style="--c1:' + s.c1 + ';--c2:' + s.c2 + ';">' +
+      '<div class="dc-head">' +
+        '<div class="dc-icon">' + s.icon + '</div>' +
+        '<div class="dc-title">' + s.title + '</div>' +
+      '</div>' +
+      '<div class="dc-body">' + bodies[s.key] + '</div>' +
+    '</div>'
+  ).join('');
+}
+
+function setBar(mode, msg, msgType){
+  const bar = document.getElementById('dataBar');
+  const title = document.getElementById('barTitle');
+  const desc = document.getElementById('barDesc');
+  const btn = document.getElementById('dlBtn');
+  const btnText = document.getElementById('dlBtnText');
+  const status = document.getElementById('dataStatus');
+
+  if(mode === 'hidden'){ bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  bar.classList.toggle('is-manual', mode === 'manual');
+
+  if(mode === 'first'){
+    title.textContent = 'تنزيل البيانات';
+    desc.textContent = 'يجب تنزيل قاعدة بيانات الأدوية لـ (فارماء حاشي) مرة واحدة لتعمل بعدها بدون إنترنت نهائياً.';
+    btnText.textContent = 'تنزيل البيانات الآن';
+    btn.disabled = false;
+  }else if(mode === 'update'){
+    title.textContent = '✨ توجد بيانات جديدة';
+    desc.textContent = 'تمت إضافة أو تعديل أدوية في القاعدة. اضغط تحديث لتنزيلها.';
+    btnText.textContent = '🔄 تحديث البيانات';
+    btn.disabled = false;
+  }else if(mode === 'manual'){
+    title.textContent = 'تحديث البيانات';
+    desc.textContent = 'قاعدة الأدوية محفوظة على جهازك وتعمل بدون إنترنت.';
+    btnText.textContent = '🔄 تحديث البيانات الآن';
+    btn.disabled = false;
+  }else if(mode === 'loading'){
+    btnText.textContent = 'جارٍ التنزيل…';
+    btn.disabled = true;
+  }else if(mode === 'ready'){
+    btnText.textContent = 'تم التنزيل ✓';
+    btn.disabled = true;
+  }
+
+  if(msg !== undefined){
+    status.textContent = msg;
+    status.className = 'data-status' + (msgType ? ' ' + msgType : '');
+  }
+}
+
+async function downloadData(){
+  setBar('loading', 'جارٍ البحث عن الأدوية في Firebase…');
+
+  try{
+    let list;
+    let source;
+
+    if(pendingRemoteList && pendingRemoteList.length){
+      list   = pendingRemoteList;
+      source = pendingRemoteSource;
+    }else{
+      list   = await fetchMedsFromFirebase();
+      source = currentSource;
+    }
+
+    if(list.length){
+      let version = '';
+      try{ version = await fetchRemoteVersion(); }catch(e){}
+      if(!version) version = simpleHash(JSON.stringify(list));
+
+      saveLocalData(list, version, source);
+      pendingRemoteList = null;
+      pendingRemoteSource = '';
+      updateAvailable = false;
+
+      renderList(document.getElementById('searchInput').value);
+
+      setBar('ready', '✅ تم تنزيل ' + list.length + ' دواء لصيدلية طوفان الأقصى الحديثة — يعمل الآن بدون إنترنت.', 'ok');
+
+      setTimeout(()=>{
+        setBar('manual', 'البيانات محدّثة وتعمل بدون إنترنت.', 'ok');
+      }, 2600);
+      return;
+    }
+
+    setBar('first', '❌ لم يتم العثور على أدوية في قاعدة البيانات.', 'err');
+  }catch(err){
+    setBar('first', '⚠️ تعذّر الاتصال بقاعدة البيانات. تحقق من الإنترنت ثم أعد المحاولة.', 'err');
+  }
+}
+
+async function checkUpdates(){
+  const hasLocal = loadLocalData();
+  if(!hasLocal){
+    renderList('');
+    setBar('first', 'لم يتم تنزيل البيانات بعد.', '');
+    return;
+  }
+
+  renderList('');
+  setBar('manual', 'البيانات محفوظة على جهازك.', 'ok');
+
+  try{
+    let remoteVer = '';
+    try{ remoteVer = await fetchRemoteVersion(); }catch(e){}
+
+    if(!remoteVer){
+      const list = await fetchMedsFromFirebase();
+      if(list.length){
+        pendingRemoteList   = list;
+        pendingRemoteSource = currentSource;
+        remoteVer = simpleHash(JSON.stringify(list));
+      }
+    }
+
+    const localVer = safeGet(LS_VER) || '';
+    if(remoteVer && remoteVer !== localVer){
+      updateAvailable = true;
+      setBar('update', 'يتوفر إصدار أحدث من قاعدة البيانات.', 'warn');
+    }
+  }catch(e){}
+}
+
+function bindEvents(){
+  document.getElementById('btnMeds').addEventListener('click', ()=>{
+    if(!MEDS.length){
+      if(!loadLocalData()){
+        setBar('first', 'الرجاء تنزيل البيانات أولاً.', 'err');
+        window.scrollTo({ top: document.body.scrollHeight, behavior:'smooth' });
+        return;
+      }
+    }
+    nav('list');
+  });
+
+  document.getElementById('backFromList').addEventListener('click', ()=> history.back());
+  document.getElementById('backFromDetail').addEventListener('click', ()=> history.back());
+
+  const input = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('clearBtn');
+
+  input.addEventListener('input', ()=>{
+    clearBtn.classList.toggle('show', input.value.length > 0);
+    renderList(input.value);
+  });
+  input.addEventListener('search', ()=> renderList(input.value));
+  clearBtn.addEventListener('click', ()=>{
+    input.value = '';
+    clearBtn.classList.remove('show');
+    renderList('');
+    input.focus();
+  });
+
+  document.getElementById('listBody').addEventListener('click', (e)=>{
+    const card = e.target.closest('.med-card');
+    if(!card) return;
+    const id = card.getAttribute('data-id');
+    if(id) nav('detail', id);
+  });
+
+  document.getElementById('dlBtn').addEventListener('click', downloadData);
+
+  let lastTouch = 0;
+  document.addEventListener('touchend', (e)=>{
+    const now = Date.now();
+    if(now - lastTouch <= 300) e.preventDefault();
+    lastTouch = now;
+  }, { passive:false });
+}
+
+async function init(){
+  try {
+    safeReplaceState({ name:'home' });
+    bindEvents();
+    startDust();
+  } catch(e){
+    console.error('init error:', e);
+  }
+  try {
+    await checkUpdates();
+  } catch(e){
+    console.error('checkUpdates error:', e);
+  }
+}
+
+window.addEventListener('error', function(ev){
+  console.error('Global error:', ev.message);
+});
+window.addEventListener('unhandledrejection', function(ev){
+  console.error('Unhandled promise rejection:', ev.reason);
+});
+
+if(document.readyState === 'loading'){
+  document.addEventListener('DOMContentLoaded', init);
+}else{
+  init();
+}
+</script>
+</body>
+</html>
